@@ -1,0 +1,40 @@
+ext.versions = [
+        kotlin          : '1.2.50',
+        androidAppCompat: '1.0.0-alpha1',
+        constrainLayout : '1.1.2',
+
+        //Firebase
+        firebase1500    : '15.0.1',
+        firebase1501    : '15.0.2',
+        firebase1600    : '16.0.0',
+        firebase1601    : '16.0.1',
+        firebase1602    : '16.0.2',
+        firebase1700    : '17.0.0',
+        firebase1701    : '17.0.1',
+        firebase1702    : '17.0.2',
+        firebase1703    : '17.0.3',
+        firebase1710    : '17.1.0',
+
+        //Test
+        testRunner      : '1.1.0-alpha3',
+        testEspressoCore: '3.1.0-alpha3'
+]
+
+ext.libraries = [
+        androidAppCompat : "androidx.appcompat:appcompat:$versions.androidAppCompat",
+        constrainLayout  : "androidx.constraintlayout:constraintlayout:$versions.constrainLayout",
+
+        kotlin           : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin",
+        kotlinAllOpen    : "org.jetbrains.kotlin:kotlin-allopen:$versions.kotlin",
+
+        firebaseCore     : "com.google.firebase:firebase-core:$versions.firebase1601",
+        firebaseFirestore: "com.google.firebase:firebase-firestore:$versions.firebase1703",
+        firebaseAuth     : "com.google.firebase:firebase-auth:$versions.firebase1602",
+        firebaseMessaging: "com.google.firebase:firebase-messaging:$versions.firebase1710",
+        firebaseConfig   : "com.google.firebase:firebase-config:$versions.firebase1600",
+        firebasePerf     : "com.google.firebase:firebase-perf:$versions.firebase1600",
+
+        testRunner       : "androidx.test:runner:$versions.testRunner",
+        espressoCore     : "androidx.test.espresso:espresso-core:$versions.testEspressoCore"
+
+]
