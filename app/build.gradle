@@ -13,6 +13,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -25,6 +26,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation libraries.multiDex
     implementation libraries.kotlin
     implementation libraries.androidAppCompat
     implementation libraries.constrainLayout
@@ -33,6 +35,8 @@ dependencies {
     implementation libraries.firebaseAuth
     implementation libraries.firebaseMessaging
     implementation libraries.firebaseConfig
+    implementation libraries.firebaseIid
+    implementation libraries.firebaseDispatcher
 
     androidTestImplementation libraries.testRunner
     androidTestImplementation libraries.espressoCore
