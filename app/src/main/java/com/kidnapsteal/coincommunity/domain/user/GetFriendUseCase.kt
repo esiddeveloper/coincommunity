@@ -2,12 +2,12 @@ package com.kidnapsteal.coincommunity.domain.user
 
 import com.kidnapsteal.coincommunity.data.UserRepository
 import com.kidnapsteal.coincommunity.data.local.entity.User
-import io.reactivex.Single
+import io.reactivex.Observable
 
 interface GetFriendUseCase {
-    fun execute(): Single<List<User>>
+    fun execute(): Observable<List<User>>
 }
 
 class GetFriendUseCaseImpl(private val repo: UserRepository) : GetFriendUseCase {
-    override fun execute(): Single<List<User>> = repo.getAllUser()
+    override fun execute(): Observable<List<User>> = repo.getAllUser()
 }

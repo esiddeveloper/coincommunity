@@ -16,4 +16,8 @@ data class User(
         var phoneNumber: String = "",
         var notificationID: String = "",
         var bod: Date = Date()
-)
+) {
+    fun isEmpty(): Boolean {
+        return userId.isEmpty()
+    }
+}
