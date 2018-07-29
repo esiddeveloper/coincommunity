@@ -47,6 +47,7 @@ dependencies {
     implementation libraries.firebaseCore
     implementation libraries.firebaseFirestore
     implementation libraries.firebaseAuth
+    implementation libraries.firebaseAuthUi
     implementation libraries.firebaseMessaging
     implementation libraries.firebaseConfig
     implementation libraries.firebaseIid
@@ -63,6 +64,12 @@ dependencies {
     implementation libraries.recyclerView
     implementation libraries.supportDesign
     implementation libraries.gson
+
+    implementation libraries.dagger
+    implementation libraries.daggerAndroid
+    implementation libraries.daggerAndroidSupport
+    kapt libraries.daggerCompiler
+    kapt libraries.daggerAndroidProcessor
 
     androidTestImplementation libraries.testRunner
     androidTestImplementation libraries.espressoCore

@@ -31,6 +31,7 @@ ext.versions = [
         firebase1703           : '17.0.3',
         firebase1710           : '17.1.0',
         firebaseJobDispatcher  : '0.8.5',
+        firebaseAuthUi         : '4.0.0',
 
         //Test
         testRunner             : '1.1.0-alpha3',
@@ -53,51 +54,61 @@ ext.versions = [
         runnerVersion          : '1.0.1',
         roomRxJava             : '1.0.0-alpha5',
         supportLibraryVersion  : '1.0.0-alpha1',
-        workVersion            : '1.0.0-alpha04'
+        workVersion            : '1.0.0-alpha04',
+
+        dagger                 : '2.16'
 ]
 
 ext.libraries = [
-        androidAppCompat     : "androidx.appcompat:appcompat:$versions.androidAppCompat",
-        multiDex             : "androidx.multidex:multidex:$versions.multiDex",
-        constrainLayout      : "androidx.constraintlayout:constraintlayout:$versions.constrainLayout",
 
-        kotlin               : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin",
-        kotlinAllOpen        : "org.jetbrains.kotlin:kotlin-allopen:$versions.kotlin",
+        dagger                : "com.google.dagger:dagger:$versions.dagger",
+        daggerCompiler        : "com.google.dagger:dagger-compiler:$versions.dagger",
+        daggerAndroid         : "com.google.dagger:dagger-android:$versions.dagger",
+        daggerAndroidSupport  : "com.google.dagger:dagger-android-support:$versions.dagger",
+        daggerAndroidProcessor: "com.google.dagger:dagger-android-processor:$versions.dagger",
 
-        rxJava               : "io.reactivex.rxjava2:rxjava:$versions.rxJava2",
-        rxAndroid            : "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid",
+        androidAppCompat      : "androidx.appcompat:appcompat:$versions.androidAppCompat",
+        multiDex              : "androidx.multidex:multidex:$versions.multiDex",
+        constrainLayout       : "androidx.constraintlayout:constraintlayout:$versions.constrainLayout",
 
-        firebaseCore         : "com.google.firebase:firebase-core:$versions.firebase1601",
-        firebaseFirestore    : "com.google.firebase:firebase-firestore:$versions.firebase1703",
-        firebaseAuth         : "com.google.firebase:firebase-auth:$versions.firebase1602",
-        firebaseMessaging    : "com.google.firebase:firebase-messaging:$versions.firebase1710",
-        firebaseConfig       : "com.google.firebase:firebase-config:$versions.firebase1600",
-        firebasePerf         : "com.google.firebase:firebase-perf:$versions.firebase1600",
-        firebaseIid          : "com.google.firebase:firebase-iid:$versions.firebase1620",
-        firebaseDispatcher   : "com.firebase:firebase-jobdispatcher:$versions.firebaseJobDispatcher",
+        kotlin                : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin",
+        kotlinAllOpen         : "org.jetbrains.kotlin:kotlin-allopen:$versions.kotlin",
 
-        testRunner           : "androidx.test:runner:$versions.testRunner",
-        espressoCore         : "androidx.test.espresso:espresso-core:$versions.testEspressoCore",
+        rxJava                : "io.reactivex.rxjava2:rxjava:$versions.rxJava2",
+        rxAndroid             : "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid",
 
-        junit                : "junit:junit:$versions.junit",
-        mockitoCore          : "org.mockito:mockito-core:$versions.mockitoCore",
+        firebaseCore          : "com.google.firebase:firebase-core:$versions.firebase1601",
+        firebaseFirestore     : "com.google.firebase:firebase-firestore:$versions.firebase1703",
+        firebaseAuth          : "com.google.firebase:firebase-auth:$versions.firebase1602",
+        firebaseAuthUi        : "com.firebaseui:firebase-ui-auth:$versions.firebaseAuthUi",
+        firebaseMessaging     : "com.google.firebase:firebase-messaging:$versions.firebase1710",
+        firebaseConfig        : "com.google.firebase:firebase-config:$versions.firebase1600",
+        firebasePerf          : "com.google.firebase:firebase-perf:$versions.firebase1600",
+        firebaseIid           : "com.google.firebase:firebase-iid:$versions.firebase1620",
+        firebaseDispatcher    : "com.firebase:firebase-jobdispatcher:$versions.firebaseJobDispatcher",
+
+        testRunner            : "androidx.test:runner:$versions.testRunner",
+        espressoCore          : "androidx.test.espresso:espresso-core:$versions.testEspressoCore",
+
+        junit                 : "junit:junit:$versions.junit",
+        mockitoCore           : "org.mockito:mockito-core:$versions.mockitoCore",
 
 
-        glideKapt            : "com.github.bumptech.glide:compiler:$versions.glideVersion",
-        arcRoomCompiler      : "androidx.room:room-compiler:$versions.roomVersion",
-        arcRoomRxJava        : "android.arch.persistence.room:rxjava2:$versions.roomRxJava",
+        glideKapt             : "com.github.bumptech.glide:compiler:$versions.glideVersion",
+        arcRoomCompiler       : "androidx.room:room-compiler:$versions.roomVersion",
+        arcRoomRxJava         : "android.arch.persistence.room:rxjava2:$versions.roomRxJava",
 
-        glide                : "com.github.bumptech.glide:glide:$versions.glideVersion",
-        archRoomRuntime      : "androidx.room:room-runtime:$versions.roomVersion",
-        arcLifecycle         : "androidx.lifecycle:lifecycle-extensions:$versions.lifecycleVersion",
-        arcNavigationFragment: "android.arch.navigation:navigation-fragment-ktx:$versions.navigationVersion",
-        arcNavigationUI      : "android.arch.navigation:navigation-ui-ktx:$versions.navigationVersion",
-        arcWork              : "android.arch.work:work-runtime-ktx:$versions.workVersion",
-        xCore                : "androidx.core:core-ktx:$versions.ktxVersion",
-        supportV4            : "androidx.legacy:legacy-support-v4:$versions.supportLibraryVersion",
-        recyclerView         : "androidx.recyclerview:recyclerview:$versions.supportLibraryVersion",
-        supportDesign        : "com.google.android.material:material:$versions.supportLibraryVersion",
-        gson                 : "com.google.code.gson:gson:$versions.gsonVersion"
+        glide                 : "com.github.bumptech.glide:glide:$versions.glideVersion",
+        archRoomRuntime       : "androidx.room:room-runtime:$versions.roomVersion",
+        arcLifecycle          : "androidx.lifecycle:lifecycle-extensions:$versions.lifecycleVersion",
+        arcNavigationFragment : "android.arch.navigation:navigation-fragment-ktx:$versions.navigationVersion",
+        arcNavigationUI       : "android.arch.navigation:navigation-ui-ktx:$versions.navigationVersion",
+        arcWork               : "android.arch.work:work-runtime-ktx:$versions.workVersion",
+        xCore                 : "androidx.core:core-ktx:$versions.ktxVersion",
+        supportV4             : "androidx.legacy:legacy-support-v4:$versions.supportLibraryVersion",
+        recyclerView          : "androidx.recyclerview:recyclerview:$versions.supportLibraryVersion",
+        supportDesign         : "com.google.android.material:material:$versions.supportLibraryVersion",
+        gson                  : "com.google.code.gson:gson:$versions.gsonVersion"
 
 ]
 
