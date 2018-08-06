@@ -37,7 +37,8 @@ ext.versions = [
         testRunner             : '1.1.0-alpha3',
         testEspressoCore       : '3.1.0-alpha3',
         junit                  : '4.12',
-        mockitoCore            : '1.10.19',
+        mockito                : "2.10.0",
+        mockitoKotlin          : "1.5.0",
 
         // App dependencies
         constraintLayoutVersion: '1.1.2',
@@ -91,7 +92,9 @@ ext.libraries = [
         espressoCore          : "androidx.test.espresso:espresso-core:$versions.testEspressoCore",
 
         junit                 : "junit:junit:$versions.junit",
-        mockitoCore           : "org.mockito:mockito-core:$versions.mockitoCore",
+        mockito               : "org.mockito:mockito-core:$versions.mockito",
+        mockitoAndroid        : "org.mockito:mockito-android:$versions.mockito",
+        mockitoKotlin         : "com.nhaarman:mockito-kotlin:$versions.mockitoKotlin",
 
 
         glideKapt             : "com.github.bumptech.glide:compiler:$versions.glideVersion",

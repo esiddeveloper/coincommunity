@@ -2,16 +2,16 @@ package com.kidnapsteal.coincommunity.data.local.dao
 
 import androidx.room.*
 import com.kidnapsteal.coincommunity.data.local.entity.User
-import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Single
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM users WHERE id = :userId")
+    @Query("SELECT * FROM User WHERE id = :userId")
     fun getUserById(userId: String): Single<User>
 
-    @Query("SELECT * FROM users")
-    fun getAllUser(): Flowable<List<User>>
+    @Query("SELECT * FROM User")
+    fun getAllUser(): Maybe<List<User>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(users: List<User>)
