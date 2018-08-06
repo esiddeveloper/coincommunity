@@ -1,10 +1,10 @@
 package com.kidnapsteal.coincommunity.data.remote.firebase
 
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
+import com.google.firebase.firestore.QueryDocumentSnapshot
+import io.reactivex.*
 
 fun updateProfile(task: Task<Void>): Completable {
     return Completable.create {
@@ -34,4 +34,26 @@ fun <T> getObservableTask(task: Task<T>): Observable<T> {
     return Observable.create {
         ObservableFirestore.assingOnTask(it, task)
     }
+}
+
+fun <T> getFlowableTask(task: Task<T>): Flowable<T> {
+    return Flowable.create({
+        FlowableFirestore.assingOnTask(it, task)
+    }, BackpressureStrategy.DROP)
+}
+
+fun getFlowableRealTimeTask(task: CollectionReference): Flowable<List<QueryDocumentSnapshot>> {
+    return Flowable.create({
+        task.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            if (firebaseFirestoreException != null) {
+                it.onError(firebaseFirestoreException)
+                it.onComplete()
+            }
+
+            if (querySnapshot?.size()!! > 0) {
+                it.onNext(querySnapshot.map { it })
+            }
+
+        }
+    }, BackpressureStrategy.DROP)
 }

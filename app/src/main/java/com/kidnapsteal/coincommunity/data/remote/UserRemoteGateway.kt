@@ -6,24 +6,29 @@ import com.google.firebase.firestore.SetOptions
 import com.kidnapsteal.coincommunity.data.local.entity.User
 import com.kidnapsteal.coincommunity.data.remote.firebase.*
 import io.reactivex.Completable
-import io.reactivex.Observable
+import io.reactivex.Flowable
 import io.reactivex.Single
+import javax.inject.Inject
+import javax.inject.Singleton
 
 interface UserRemoteGateway {
     fun getUser(uid: String): Single<User>
-    fun getFriendList(): Observable<List<User>>
+    fun getFriendList(): Flowable<List<User>>
     fun putUser(user: User): Completable
     fun addFriend(friendUid: String): Completable
     fun removeFriend(friendUid: String): Completable
 }
 
-class UserRemoteGatewayImpl(private val auth: FirebaseAuth,
-                            private val firestore: FirebaseFirestore) : UserRemoteGateway {
+@Singleton
+class UserRemoteGatewayImpl @Inject constructor(
+        private val auth: FirebaseAuth,
+        private val firestore: FirebaseFirestore) : UserRemoteGateway {
 
+    //todo remove hardcoded ID == anjonjeng
     override fun removeFriend(friendUid: String): Completable {
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            val uid = currentUser.uid
+            val uid = /*currentUser.uid*/ "anjonjeng"
             val db = firestore.collection("user").document(uid).collection("friends")
                     .document(friendUid)
             return removeFriendTask(db.delete())
@@ -35,7 +40,7 @@ class UserRemoteGatewayImpl(private val auth: FirebaseAuth,
     override fun addFriend(friendUid: String): Completable {
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            val uid = currentUser.uid
+            val uid = /*currentUser.uid*/ "anjonjeng"
             val db = firestore.collection("user")
             val self = db.document(uid).collection("friends").document(friendUid)
             val friend = db.document(friendUid).collection("friends").document(uid)
@@ -55,14 +60,14 @@ class UserRemoteGatewayImpl(private val auth: FirebaseAuth,
 
     }
 
-    override fun getFriendList(): Observable<List<User>> {
+    override fun getFriendList(): Flowable<List<User>> {
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            val uid = currentUser.uid
+            val uid = /*currentUser.uid*/ "anjonjeng"
             val db = firestore.collection("user").document(uid)
                     .collection("friends")
-            return getObservableTask(db.get()).map {
-                if (!it.isEmpty) {
+            return getFlowableRealTimeTask(db).map {
+                if (it.isNotEmpty()) {
                     it.map {
                         it.toObject(User::class.java)
                     }
@@ -71,7 +76,7 @@ class UserRemoteGatewayImpl(private val auth: FirebaseAuth,
                 }
             }
         } else {
-            return Observable.error(Exception("Need To Login"))
+            return Flowable.error(Exception("Need To Login"))
         }
     }
 
