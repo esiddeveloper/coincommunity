@@ -3,11 +3,13 @@ package com.kidnapsteal.coincommunity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.kidnapsteal.coincommunity.presentation.friend.FriendFragment
 import com.kidnapsteal.coincommunity.util.Ln
 import dagger.android.support.DaggerAppCompatActivity
+import java.util.*
 
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -18,12 +20,32 @@ class MainActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val fragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as FriendFragment?
+    }
 
-        if (fragment == null) {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainer, FriendFragment(), FriendFragment::class.java.simpleName)
-                    .commit()
+    override fun onResume() {
+        super.onResume()
+
+        val firebaseAuth = FirebaseAuth.getInstance()
+        if (firebaseAuth.currentUser != null) {
+            val fragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as FriendFragment?
+
+            if (fragment == null) {
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, FriendFragment(), FriendFragment::class.java.simpleName)
+                        .commit()
+            }
+
+        } else {
+            val providers = Arrays.asList(
+                    AuthUI.IdpConfig.EmailBuilder().build(),
+                    AuthUI.IdpConfig.PhoneBuilder().build(),
+                    AuthUI.IdpConfig.GoogleBuilder().build())
+            startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setAvailableProviders(providers)
+                            .build(),
+                    RC_SIGN_IN);
         }
     }
 

@@ -16,6 +16,7 @@ import javax.inject.Singleton
     AppModule::class,
     UserModule::class,
     FriendModule::class,
+    ConversationModule::class,
     ActivityBindingModule::class,
     AndroidSupportInjectionModule::class
 ])

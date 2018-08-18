@@ -1,5 +1,6 @@
 package com.kidnapsteal.coincommunity.presentation.friend
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kidnapsteal.coincommunity.R
 import com.kidnapsteal.coincommunity.data.local.entity.User
+import com.kidnapsteal.coincommunity.presentation.conversation.ConversationActivity
 import com.kidnapsteal.coincommunity.util.Ln
 import com.kidnapsteal.coincommunity.util.show
 import dagger.android.support.DaggerFragment
@@ -30,7 +32,17 @@ class FriendFragment @Inject constructor() : DaggerFragment(), FriendContract.Vi
 
     private fun initRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = FriendAdapter({ addFriend(it) }, { deleteFriend(it) })
+        recyclerView.adapter = FriendAdapter(
+//                { addFriend(it) },
+                { openConversationScreen(it) },
+                { deleteFriend(it) }
+        )
+    }
+
+    //TODO remove after test
+    private fun openConversationScreen(friendId: String) {
+        startActivity(Intent(activity, ConversationActivity::class.java)
+                .putExtra(ConversationActivity.USER_ID, friendId))
     }
 
     private fun addFriend(friendId: String) {
