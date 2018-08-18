@@ -18,7 +18,7 @@ fun addFriendTask(task: Task<Void>): Completable {
     }
 }
 
-fun removeFriendTask(task: Task<Void>): Completable {
+fun deleteTask(task: Task<Void>): Completable {
     return Completable.create {
         CompletableFirestore.assignOnTask(it, task)
     }

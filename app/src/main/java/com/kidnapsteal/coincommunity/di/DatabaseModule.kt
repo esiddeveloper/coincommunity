@@ -2,6 +2,7 @@ package com.kidnapsteal.coincommunity.di
 
 import android.app.Application
 import androidx.room.Room
+import com.kidnapsteal.coincommunity.data.local.dao.ConversationDao
 import com.kidnapsteal.coincommunity.data.local.dao.UserDao
 import com.kidnapsteal.coincommunity.data.local.database.AppDatabase
 import dagger.Module
@@ -33,4 +34,7 @@ class DatabaseModule {
     @Provides
     fun provideUserDao(appDatabase: AppDatabase): UserDao = appDatabase.userDao()
 
+    @Singleton
+    @Provides
+    fun provideConversationDao(appDatabase: AppDatabase): ConversationDao = appDatabase.conversationDao()
 }

@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.kidnapsteal.coincommunity.data.local.entity.User
 import com.kidnapsteal.coincommunity.data.remote.firebase.*
+import com.kidnapsteal.coincommunity.util.MockData.mockId
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -28,10 +29,10 @@ class UserRemoteGatewayImpl @Inject constructor(
     override fun removeFriend(friendUid: String): Completable {
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            val uid = /*currentUser.uid*/ "anjonjeng"
+            val uid = /*currentUser.uid*/ mockId()
             val db = firestore.collection("user").document(uid).collection("friends")
                     .document(friendUid)
-            return removeFriendTask(db.delete())
+            return deleteTask(db.delete())
         } else {
             return Completable.error(Exception("Need To Login"))
         }
@@ -40,7 +41,7 @@ class UserRemoteGatewayImpl @Inject constructor(
     override fun addFriend(friendUid: String): Completable {
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            val uid = /*currentUser.uid*/ "anjonjeng"
+            val uid = /*currentUser.uid*/ mockId()
             val db = firestore.collection("user")
             val self = db.document(uid).collection("friends").document(friendUid)
             val friend = db.document(friendUid).collection("friends").document(uid)
@@ -63,7 +64,7 @@ class UserRemoteGatewayImpl @Inject constructor(
     override fun getFriendList(): Flowable<List<User>> {
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            val uid = /*currentUser.uid*/ "anjonjeng"
+            val uid = /*currentUser.uid*/ mockId()
             val db = firestore.collection("user").document(uid)
                     .collection("friends")
             return getFlowableRealTimeTask(db).map {
