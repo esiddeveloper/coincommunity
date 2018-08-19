@@ -41,7 +41,7 @@ class ConversationRepositoryImpl @Inject constructor(
     }
 
     override fun deleteConversation(userId: String, id: String): Completable {
-        return remote.deleteConversation(userId, id).andThen(local.deleteConversation(id))
+        return local.deleteConversation(id).subscribeOn(Schedulers.computation()).andThen(remote.deleteConversation(userId, id))
     }
 
     private fun getLocalConv(userId: String): Flowable<List<Conversation>> {

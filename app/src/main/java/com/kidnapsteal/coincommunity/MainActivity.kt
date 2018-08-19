@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.kidnapsteal.coincommunity.presentation.friend.FriendFragment
 import com.kidnapsteal.coincommunity.util.Ln
 import dagger.android.support.DaggerAppCompatActivity
@@ -33,6 +34,17 @@ class MainActivity : DaggerAppCompatActivity() {
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.fragmentContainer, FriendFragment(), FriendFragment::class.java.simpleName)
                         .commit()
+
+                val firestore = FirebaseFirestore.getInstance()
+                val db = firestore.collection("user").document("kidnapsteal1").collection("chats")
+                        .document("anjonjeng").collection("message").document("02f5e108-1847-4a9e-9447-fdb25077cd35")
+                db.delete().addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Ln.d("SuccessDelete", "Deleted")
+                    } else {
+                        Ln.d("SuccessDelete", "failed")
+                    }
+                }
             }
 
         } else {

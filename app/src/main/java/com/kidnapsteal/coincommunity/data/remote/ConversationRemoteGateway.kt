@@ -19,7 +19,6 @@ interface ConversationRemoteGateway {
     fun getConversations(userId: String): Flowable<List<Conversation>>
     fun sendConversation(conversation: Conversation): Completable
     fun deleteConversation(userId: String, conversationId: String): Completable
-    fun cleanConversations(userId: String): Completable
 }
 
 class ConversationRemoteGatewayImpl @Inject constructor(
@@ -35,15 +34,14 @@ class ConversationRemoteGatewayImpl @Inject constructor(
                     .document(userId).collection("message")
             getFlowableRealTimeTask(db).map {
                 if (it.isNotEmpty()) {
+                    cleanConversations(userId)
                     it.map { snapshot ->
-                        Ln.e("Remote Conv", "message : $snapshot")
                         snapshot.toObject(ConversationFirebase::class.java).toLocal(uid)
                     }
+
                 } else {
                     listOf()
                 }
-            }.doOnError {
-                Ln.e("Remote Conv", "message : ${it.message}")
             }
         } else {
             Flowable.error(Exception("Need To Login"))
@@ -69,8 +67,8 @@ class ConversationRemoteGatewayImpl @Inject constructor(
         val currentUser = auth.currentUser
         return if (currentUser != null) {
             val uid = /*currentUser.uid*/ mockId()
-            val db = firestore.collection("user").document(uid).collection("chats")
-                    .document(userId).collection("message").document(conversationId)
+            val db = firestore.collection("user").document(userId).collection("chats")
+                    .document(uid).collection("message").document(conversationId)
             deleteTask(db.delete())
         } else {
             Completable.error(Exception("Need To Login"))
@@ -78,15 +76,25 @@ class ConversationRemoteGatewayImpl @Inject constructor(
     }
 
     //delete all conversations on firebase as user already read it so keep storage low as possible
-    override fun cleanConversations(userId: String): Completable {
+    private fun cleanConversations(userId: String) {
         val currentUser = auth.currentUser
         return if (currentUser != null) {
             val uid = /*currentUser.uid*/ mockId()
             val db = firestore.collection("user").document(uid).collection("chats")
-                    .document(userId)
-            deleteTask(db.delete())
+                    .document(userId).collection("message")
+
+            val data = db.get().addOnSuccessListener { querySnapshot ->
+                querySnapshot.map { rawItem ->
+                    rawItem.toObject(ConversationFirebase::class.java)
+                }.forEach { conversation ->
+                    db.document(conversation.id).delete()
+                }
+            }.addOnFailureListener {
+                Ln.e("ConversationRemoteGateway", "cleanConversation --- ${it.message}")
+            }
         } else {
-            Completable.error(Exception("Need To Login"))
+            Ln.e("ConversationRemoteGateway", "cleanConversation --- failed to authenticate")
+
         }
     }
 

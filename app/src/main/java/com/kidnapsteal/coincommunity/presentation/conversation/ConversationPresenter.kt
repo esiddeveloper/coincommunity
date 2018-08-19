@@ -7,9 +7,8 @@ import com.kidnapsteal.coincommunity.domain.chat.SendConversationUseCase
 import com.kidnapsteal.coincommunity.util.Ln
 import com.kidnapsteal.coincommunity.util.RxScheduler
 import io.reactivex.disposables.CompositeDisposable
-import javax.inject.Inject
 
-class ConversationPresenter @Inject constructor(
+class ConversationPresenter(
         private val userId: String,
         private val getConversationUseCase: GetConversationUseCase,
         private val sendConversationUseCase: SendConversationUseCase,
@@ -34,7 +33,6 @@ class ConversationPresenter @Inject constructor(
                 .observeOn(rxScheduler.ui())
                 .subscribe({
                     Ln.d("sendMessage --- successful")
-                    loadConversations()
                 }, {
                     view.showError(it.message ?: "Unknown Error")
                 })
@@ -47,7 +45,6 @@ class ConversationPresenter @Inject constructor(
                 .observeOn(rxScheduler.ui())
                 .subscribe({
                     Ln.d("deleteMessage --- successful")
-                    loadConversations()
                 }, {
                     view.showError(it.message ?: "Unknown Error")
                 })

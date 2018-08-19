@@ -1,7 +1,7 @@
 package com.kidnapsteal.coincommunity.presentation.conversation
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.kidnapsteal.coincommunity.R
 import com.kidnapsteal.coincommunity.data.local.entity.Conversation
@@ -66,7 +67,6 @@ class ConversationActivity : DaggerAppCompatActivity(), ConversationContract.Vie
 
     override fun renderConversation(conversations: List<Conversation>) {
         (recyclerView.adapter as ConversationAdapter).updateData(conversations)
-        recyclerView.smoothScrollToPosition(conversations.size - 1)
     }
 
     override fun showError(message: String) {
@@ -82,20 +82,18 @@ class ConversationActivity : DaggerAppCompatActivity(), ConversationContract.Vie
             stackFromEnd = true
         }
 
-        recyclerView.adapter = ConversationAdapter(mutableListOf())
+        recyclerView.adapter = ConversationAdapter(mutableListOf()) { presenter.deleteMessage(it) }
     }
 }
 
 
-class ConversationAdapter(private var data: MutableList<Conversation>) : RecyclerView.Adapter<ConversationViewHolder>() {
+class ConversationAdapter(private var data: MutableList<Conversation>, private val action: (String) -> Unit) : RecyclerView.Adapter<ConversationViewHolder>() {
 
     fun updateData(newData: List<Conversation>) {
-        Log.d("List nih", "lama : ${data.size}")
-        Log.d("List nih", "Baru : ${newData.size}")
-        val diffResult = DiffUtil.calculateDiff(ConversationDiffUtilCallback(data, newData))
+        val diffResult = DiffUtil.calculateDiff(ConversationDiffUtilCallback(data, newData), false)
         this.data.clear()
         this.data.addAll(newData)
-        diffResult.dispatchUpdatesTo(this)
+        diffResult.dispatchUpdatesTo(DiffUtilDispatchAdapter(this))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConversationViewHolder {
@@ -123,6 +121,26 @@ class ConversationAdapter(private var data: MutableList<Conversation>) : Recycle
 
     override fun onBindViewHolder(holder: ConversationViewHolder, position: Int) {
         holder.bindConversation(data[position])
+        holder.itemView.setOnLongClickListener {
+            showBottomSheetDialog(holder.itemView.context, position)
+            true
+        }
+    }
+
+    private fun showBottomSheetDialog(context: Context, position: Int) {
+        val dialog = ConversationBottomSheet(context)
+        dialog.show()
+        dialog.actionClick = View.OnClickListener {
+            when (it.id) {
+                R.id.actionCancel -> {
+
+                }
+                R.id.actionDelete -> {
+                    action(data[position].id)
+                }
+            }
+            dialog.dismiss()
+        }
     }
 }
 
@@ -138,4 +156,23 @@ class ConversationViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         message.text = conversation.message ?: ""
         time.text = DateUtil.getShortTime(conversation.timeStamp)
     }
+}
+
+class DiffUtilDispatchAdapter(private val adapter: RecyclerView.Adapter<ConversationViewHolder>) : ListUpdateCallback {
+    override fun onInserted(position: Int, count: Int) {
+        adapter.notifyItemRangeInserted(position, count)
+    }
+
+    override fun onRemoved(position: Int, count: Int) {
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun onMoved(fromPosition: Int, toPosition: Int) {
+        adapter.notifyItemMoved(fromPosition, toPosition)
+    }
+
+    override fun onChanged(position: Int, count: Int, payload: Any?) {
+        adapter.notifyItemRangeChanged(position, count, payload)
+    }
+
 }
