@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: "kotlin-allopen"
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -21,6 +22,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        String sharedTestDir = 'src/sharedTest/java'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDir sharedTestDir
+        }
+    }
 }
 
 dependencies {
@@ -30,16 +40,44 @@ dependencies {
     implementation libraries.kotlin
     implementation libraries.androidAppCompat
     implementation libraries.constrainLayout
+
+    implementation libraries.arcRoomRxJava
+    implementation libraries.rxAndroid
+
     implementation libraries.firebaseCore
     implementation libraries.firebaseFirestore
     implementation libraries.firebaseAuth
+    implementation libraries.firebaseAuthUi
     implementation libraries.firebaseMessaging
     implementation libraries.firebaseConfig
     implementation libraries.firebaseIid
     implementation libraries.firebaseDispatcher
 
+    implementation libraries.glide
+    implementation libraries.archRoomRuntime
+    implementation libraries.arcLifecycle
+    implementation libraries.arcNavigationFragment
+    implementation libraries.arcNavigationUI
+    implementation libraries.arcWork
+    implementation libraries.xCore
+    implementation libraries.supportV4
+    implementation libraries.recyclerView
+    implementation libraries.supportDesign
+    implementation libraries.gson
+
+    implementation libraries.dagger
+    implementation libraries.daggerAndroid
+    implementation libraries.daggerAndroidSupport
+    kapt libraries.daggerCompiler
+    kapt libraries.daggerAndroidProcessor
+
     androidTestImplementation libraries.testRunner
     androidTestImplementation libraries.espressoCore
+    testImplementation libraries.junit
+    testImplementation libraries.mockitoKotlin
+
+    kapt libraries.glideKapt
+    kapt libraries.arcRoomCompiler
 
 
 }
